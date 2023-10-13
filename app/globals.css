@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+    width: 100vw;
+    min-height: 100vh;
+
+    overflow-x: hidden;
+}
+
+body,
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
