@@ -51,6 +51,28 @@
     }
 }
 
+.download_icon {
+    width: 1.5rem;
+
+    path {
+        stroke: #353535;
+        opacity: 1;
+    }
+}
+
+.link_icon {
+    --size: 1.2rem;
+    width: var(--size);
+    height: var(--size);
+    transform: translateX(1px);
+
+    path {
+        stroke: #353535;
+        stroke-width: 0.25px;
+        opacity: 1;
+    }
+}
+
 .home_layout {
     width: 100%;
     height: fit-content;
