@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Input, Modal, ModalContent, ModalHeader, Select, SelectItem, useDisclosure } from '@nextui-org/react';
+import { Button, Input, Modal, ModalBody, ModalContent, ModalHeader, Select, SelectItem, useDisclosure } from '@nextui-org/react';
 import styles from '../../page.module.scss';
 import AddSVG from '@/svg/add';
 import SearchSVG from '@/svg/search';
@@ -16,12 +16,17 @@ import { SortBy } from '@/types/sort';
 import sortActivities from '@/util/sort';
 import LogPlaneRide from './(activities)/plane';
 import LogStoveTop from './(activities)/stove';
+import { Timestamp } from 'firebase/firestore';
 
 export default function DashboardMainActivities() {
     const { user } = useAuthSession();
     const [activities, setActivities] = useState<CarbonActivity[]>([]);
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+    const [activity, setActivity] = useState<CarbonActivity | null>(null);
+    const { isOpen: activityOpen, onOpen: activityOpenFunc, onOpenChange: activityOpenChange } = useDisclosure();
+
     const [selectedActivity, setSelectedActivity] = useState<CarbonActivityType | null>(null);
     const [serachQuery, setSearchQuery] = useState<string>('');
     const [logPage, setLogPage] = useState(0);
@@ -68,6 +73,15 @@ export default function DashboardMainActivities() {
         );
     }
 
+    function ActivityField({ label, content }: { label: string, content: string }) {
+        return (
+            <div className='w-full flex justify-between items-center border-b-2 border-gray-200 pb-1 mb-4'>
+                <h1 className='text-lg text-gray-500'>{label}</h1>
+                <h1 className='font-medium text-lg'>{content}</h1>
+            </div>
+        );
+    }
+
     useEffect(() => {
         search(serachQuery);
     }, [user, sortBy]);
@@ -108,7 +122,10 @@ export default function DashboardMainActivities() {
                 {activities.map((activity, i) => {
                     const emission = carbonFromActivity(activity);
                     return (
-                        <div key={i} className='w-full flex justify-between items-center p-4 border-b-2'>
+                        <div key={i} className='w-full flex justify-between items-center p-4 border-b-2 cursor-pointer' onClick={() => {
+                            setActivity(activity);
+                            activityOpenFunc();
+                        }}>
                             <div className='flex items-center'>
                                 <Image src={`/images/activity/${activity.type}.png`} alt='car' width={60} height={60} />
                                 <div className='flex flex-col ml-8'>
@@ -164,6 +181,21 @@ export default function DashboardMainActivities() {
                     )}
                 </ModalContent>
             </Modal>
+
+            {activity &&
+                <Modal isOpen={activityOpen} onOpenChange={activityOpenChange}>
+                    <ModalContent className='w-full flex flex-col items-center p-6'>
+                        <ModalHeader className='font-medium text-3xl mb-4'>{activity?.name}</ModalHeader>
+                        <ModalBody className='w-full flex flex-col items-center'>
+                            <div className='w-11/12 flex flex-col items-center mb-8'>
+                                <ActivityField label='Type' content={activity?.type || ''} />
+                                <ActivityField label='Date' content={formatTimestamp(activity?.time || Timestamp.now())} />
+                                <ActivityField label='Emission' content={`${carbonFromActivity(activity)}kg`} />
+                            </div>
+                        </ModalBody>
+                    </ModalContent>
+                </Modal>
+            }
         </div>
     );
 }
