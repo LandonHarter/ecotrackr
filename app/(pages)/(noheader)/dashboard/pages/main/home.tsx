@@ -1,13 +1,13 @@
 'use client'
 
 import { useAuthSession } from "@/context/UserContext";
-import { CircularProgress } from "@nextui-org/react";
+import { Button, CircularProgress } from "@nextui-org/react";
 import styles from '../../page.module.scss';
 import Image from "next/image";
 import { formatTimestamp } from "@/util/format";
 import { carbonFromActivity } from "@/util/carbon";
 
-export default function DashboardMainHome() {
+export default function DashboardMainHome({ setSelectedItem }: { setSelectedItem: Function }) {
     const { user } = useAuthSession();
 
     return (
@@ -35,7 +35,12 @@ export default function DashboardMainHome() {
                     />
                 </div>
                 <div className='w-full h-full flex flex-col border-gray-200 border-4 rounded-lg p-8'>
-                    <h1 className='font-medium text-2xl mb-8'>Your Activity</h1>
+                    <div className='w-full flex items-center justify-between'>
+                        <h1 className='h-4 font-medium text-2xl mb-8'>Your Activity</h1>
+                        <Button color='primary' className='mb-2' onPress={() => {
+                            setSelectedItem('main.activities');
+                        }}>View All</Button>
+                    </div>
 
                     {user?.carbonActivities.map((activity, i) => {
                         const numActivities = user?.carbonActivities.length || 1;

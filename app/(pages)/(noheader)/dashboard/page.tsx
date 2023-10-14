@@ -15,7 +15,7 @@ import DashboardMainRegulations from "./pages/main/regulations";
 export default function DashboardPage() {
     const [selectedItem, setSelectedItem] = useState('main.home');
     const pageUi: { [page: string]: React.ReactNode } = {
-        'main.home': <DashboardMainHome />,
+        'main.home': <DashboardMainHome setSelectedItem={setSelectedItem} />,
         'main.activities': <DashboardMainActivities />,
         'main.regulations': <DashboardMainRegulations />
     };
