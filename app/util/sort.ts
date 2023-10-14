@@ -25,12 +25,12 @@ function sortActivitiesByOldest(activities: CarbonActivity[]) {
 
 function sortActivitiesByAtoZ(activities: CarbonActivity[]) {
     return activities.sort((a, b) => {
-        return a.name.localeCompare(b.name);
+        return b.name.localeCompare(a.name);
     });
 }
 
 function sortActivitiesByZtoA(activities: CarbonActivity[]) {
     return activities.sort((a, b) => {
-        return b.name.localeCompare(a.name);
+        return a.name.localeCompare(b.name);
     });
 }
