@@ -32,7 +32,7 @@ export default function Home() {
               </Button>
             </Link>
             <Button className="w-5/8 text-gray-400 p-7 text-center font-inter text-2xl font-bold leading-8 bg-transparent">
-              Learn More{" "}
+              Learn More
             </Button>
           </div>
         </div>
