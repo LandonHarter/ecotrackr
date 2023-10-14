@@ -13,6 +13,7 @@ import {
 import styles from "../../page.module.scss";
 import AddSVG from "@/svg/add";
 import SearchSVG from "@/svg/search";
+import RightArrowSVG from "@/svg/rightArrow";
 import { useAuthSession } from "@/context/UserContext";
 import React, { useEffect, useState } from "react";
 import { CarbonActivity, CarbonActivityType } from "@/types/emissions";
@@ -33,9 +34,6 @@ export default function DashboardMainActivities() {
     useState<CarbonActivityType | null>(null);
   const [serachQuery, setSearchQuery] = useState<string>("");
   const [logPage, setLogPage] = useState(0);
-  const pageUi: { [name: string]: React.ReactNode } = {
-    car: <LogCarRide />,
-  };
   const [sortBy, setSortBy] = useState<SortBy>("recent");
 
   function search(query: string) {
@@ -89,9 +87,9 @@ export default function DashboardMainActivities() {
 
   return (
     <div className="flex flex-col items-center justify-center p-8 h-full">
-      <div className="w-full h-fit rounded-xl flex flex-col justify-center gap-4 mb-8">
+      <div className="w-full h-fit rounded-xl flex flex-col justify-center items-center gap-4 mb-8">
         <Input
-          className="w-full"
+          className="w-100"
           classNames={{
             inputWrapper: "h-12",
             input: "h-full rounded-xl text-xl font-medium",
@@ -108,7 +106,7 @@ export default function DashboardMainActivities() {
           startContent={<AddSVG className={styles.log_activity_icon} />}
           onPress={onOpen}
         >
-          Log Activity
+          Submit
         </Button>
       </div>
 
@@ -170,7 +168,6 @@ export default function DashboardMainActivities() {
               </Button>
             </>
           )}
-          {logPage === 1 && pageUi[selectedActivity ?? "car"]}
         </ModalContent>
       </Modal>
     </div>
