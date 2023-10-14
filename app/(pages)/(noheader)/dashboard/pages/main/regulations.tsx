@@ -14,6 +14,8 @@ async function fetchRegulations() {
   const params = {
     'filter[searchTerm]': 'pollution',
     'filter[documentType]': 'Rule',
+    'sort': '-postedDate',
+    'page[size]': '24',
     'api_key': process.env.NEXT_PUBLIC_GOV_API_KEY ?? ''
   };
   const searchParams = new URLSearchParams(params);
