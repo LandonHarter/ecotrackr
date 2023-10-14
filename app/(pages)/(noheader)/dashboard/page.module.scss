@@ -8,3 +8,34 @@
         stroke: rgb(75, 85, 99);
     }
 }
+
+.carbon_icon {
+    width: 18px;
+    height: 18px;
+    margin-right: calc(0.5rem + 5px);
+
+    path,
+    circle {
+        stroke: rgb(75, 85, 99);
+    }
+}
+
+.log_activity_icon {
+    width: 25px;
+    height: 25px;
+
+    path,
+    circle {
+        stroke: white;
+        stroke-width: 2px;
+    }
+}
+
+.home_layout {
+    width: 100%;
+    height: fit-content;
+
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 10px;
+}

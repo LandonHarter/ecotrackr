@@ -1,9 +1,16 @@
-import { CarRide } from "@/types/emissions";
+import { CarRide, CarbonActivity } from "@/types/emissions";
+
+function carbonFromActivity(activity: CarbonActivity) {
+    switch (activity.type) {
+        case 'car': return carbonFromCarRide(activity as CarRide);
+        default: return 0;
+    }
+}
 
 function carbonFromCarRide(carRide: CarRide) {
     let carbonContentPerGallon: number;
     switch (carRide.fuelType) {
-        case 'petrol':
+        case 'gasoline':
             carbonContentPerGallon = 20;
             break;
         case 'diesel':
@@ -15,6 +22,8 @@ function carbonFromCarRide(carRide: CarRide) {
             carbonContentPerGallon = 20;
     }
 
-    const emissions = (carRide.distance / carRide.fuelEfficiency) * carbonContentPerGallon;
+    const emissions = Math.round((carRide.distance / carRide.fuelEfficiency) * carbonContentPerGallon);
     return emissions;
 }
+
+export { carbonFromActivity, carbonFromCarRide };
