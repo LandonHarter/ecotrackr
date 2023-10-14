@@ -93,8 +93,6 @@ export default function DashboardMainActivities() {
                 }}>
                     <SelectItem key='recent' value='Recent'>Recent</SelectItem>
                     <SelectItem key='oldest' value='Oldest'>Oldest</SelectItem>
-                    <SelectItem key='highest-carbon' value='Highest Emissions'>Highest Emissions</SelectItem>
-                    <SelectItem key='lowest-carbon' value='Lowest Emissions'>Lowest Emissions</SelectItem>
                     <SelectItem key='a-z' value='A-Z'>A-Z</SelectItem>
                     <SelectItem key='z-a' value='Z-A'>Z-A</SelectItem>
                 </Select>

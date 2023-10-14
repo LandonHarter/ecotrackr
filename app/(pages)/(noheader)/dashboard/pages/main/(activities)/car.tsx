@@ -54,7 +54,7 @@ export default function LogCarRide({ closeModal }: { closeModal: Function }) {
     return (
         <div className='flex flex-col items-center mt-4'>
             <div className='flex flex-col items-center mb-8'>
-                <Input placeholder='Car Ride' className='w-full text-xl mb-4' onChange={(e) => {
+                <Input placeholder='Name your trip' className='w-full text-xl mb-4' onChange={(e) => {
                     setName(e.target.value);
                 }} />
 

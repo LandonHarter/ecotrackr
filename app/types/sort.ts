@@ -1,1 +1,1 @@
-export type SortBy = 'recent' | 'oldest' | 'highest-carbon' | 'lowest-carbon' | 'a-z' | 'z-a';
+export type SortBy = 'recent' | 'oldest' | 'a-z' | 'z-a';
