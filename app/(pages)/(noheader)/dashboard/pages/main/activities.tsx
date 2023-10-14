@@ -23,9 +23,6 @@ export default function DashboardMainActivities() {
     const [selectedActivity, setSelectedActivity] = useState<CarbonActivityType | null>(null);
     const [serachQuery, setSearchQuery] = useState<string>('');
     const [logPage, setLogPage] = useState(0);
-    const pageUi: { [name: string]: React.ReactNode } = {
-        'car': <LogCarRide />
-    };
     const [sortBy, setSortBy] = useState<SortBy>('recent');
 
     function search(query: string) {
@@ -43,11 +40,18 @@ export default function DashboardMainActivities() {
         setActivities(sorted);
     }
 
+    function getPageUi(onClose: Function) {
+        switch (selectedActivity) {
+            case 'car': return <LogCarRide closeModal={onClose} />;
+            default: return <></>;
+        }
+    }
+
     function CarbonActivity({ name }: { name: string }) {
         return (
             <label htmlFor={name} className={styles.radio_card}>
                 <input type="radio" id={name} onChange={() => {
-                    setSelectedActivity(name as CarbonActivityType);
+                    setSelectedActivity(name.toLowerCase() as CarbonActivityType);
                 }} />
                 <div className={styles.card_content_wrapper}>
                     <span className={styles.check_icon}></span>
@@ -62,8 +66,14 @@ export default function DashboardMainActivities() {
 
     useEffect(() => {
         search(serachQuery);
-        console.log('sorting');
     }, [user, sortBy]);
+
+    useEffect(() => {
+        if (!isOpen) {
+            setSelectedActivity(null);
+            setLogPage(0);
+        }
+    }, [isOpen]);
 
     return (
         <div className='flex flex-col p-8'>
@@ -115,28 +125,33 @@ export default function DashboardMainActivities() {
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='2xl'>
                 <ModalContent className='w-full flex flex-col items-center p-6'>
-                    <ModalHeader className='font-medium text-3xl mb-1'>Log Activity</ModalHeader>
-
-                    {logPage === 0 &&
+                    {(onClose: Function) => (
                         <>
-                            <div className='grid grid-cols-1 gap-8 mb-12'>
-                                <CarbonActivity name='Car' />
-                            </div>
+                            <ModalHeader className='font-medium text-3xl mb-1'>Log Activity</ModalHeader>
+                            {logPage === 0 &&
+                                <>
+                                    <div className='grid grid-cols-1 gap-8 mb-12'>
+                                        <CarbonActivity name='Car' />
+                                    </div>
 
-                            <Button color='primary' onPress={() => {
-                                if (selectedActivity === null) {
-                                    toast.error('Please select an activity to log.');
-                                    return;
-                                }
+                                    <Button color='primary' onPress={() => {
+                                        if (selectedActivity === null) {
+                                            toast.error('Please select an activity to log.');
+                                            return;
+                                        }
 
-                                setLogPage(1);
-                            }}>Continue</Button>
+                                        setLogPage(1);
+                                    }}>Continue</Button>
+                                </>
+
+                            }
+                            {logPage === 1 &&
+                                <>
+                                    {getPageUi(onClose)}
+                                </>
+                            }
                         </>
-
-                    }
-                    {logPage === 1 &&
-                        pageUi[selectedActivity ?? 'car']
-                    }
+                    )}
                 </ModalContent>
             </Modal>
         </div>

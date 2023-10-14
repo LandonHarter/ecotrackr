@@ -34,7 +34,7 @@ export default function DashboardMainHome() {
                         showValueLabel
                     />
                 </div>
-                <div className='w-full h-full flex flex-col justify-center border-gray-200 border-4 rounded-lg p-8'>
+                <div className='w-full h-full flex flex-col border-gray-200 border-4 rounded-lg p-8'>
                     <h1 className='font-medium text-2xl mb-8'>Your Activity</h1>
 
                     {user?.carbonActivities.map((activity, i) => {
