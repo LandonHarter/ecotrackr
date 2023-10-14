@@ -121,6 +121,12 @@ export default function DashboardMainActivities() {
                         </div>
                     );
                 })}
+
+                {activities.length == 0 &&
+                    <div className='w-full h-64 flex flex-col items-center justify-center'>
+                        <h1 className='font-medium text-2xl text-gray-400'>No activities logged</h1>
+                    </div>
+                }
             </div>
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='2xl'>
