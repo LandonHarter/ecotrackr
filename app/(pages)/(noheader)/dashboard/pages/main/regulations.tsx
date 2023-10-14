@@ -12,7 +12,7 @@ import { Regulation } from "@/types/regulation";
 async function fetchRegulations() {
   const url = 'https://api.regulations.gov/v4/documents';
   const params = {
-    'filter[searchTerm]': 'water',
+    'filter[searchTerm]': 'pollution',
     'filter[documentType]': 'Rule',
     'api_key': process.env.NEXT_PUBLIC_GOV_API_KEY ?? ''
   };
