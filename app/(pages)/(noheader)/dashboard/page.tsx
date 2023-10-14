@@ -6,15 +6,18 @@ import Image from "next/image";
 import styles from './page.module.scss';
 import RequireAuth from "@/components/auth/requireauth";
 import HouseSVG from "@/svg/house";
+import LawSVG from "@/svg/law";
 import DashboardMainHome from "./pages/main/home";
 import CarbonSVG from "@/svg/carbon";
 import DashboardMainActivities from "./pages/main/activities";
+import DashboardMainRegulations from "./pages/main/regulations";
 
 export default function DashboardPage() {
     const [selectedItem, setSelectedItem] = useState('main.home');
     const pageUi: { [page: string]: React.ReactNode } = {
         'main.home': <DashboardMainHome />,
-        'main.activities': <DashboardMainActivities />
+        'main.activities': <DashboardMainActivities />,
+        'main.regulations': <DashboardMainRegulations />
     };
 
     function SidebarItem({ title, icon, href }: { title: string, icon: React.ReactNode, href: string }) {
@@ -41,6 +44,7 @@ export default function DashboardPage() {
                     <div className='w-11/12 h-0.5 bg-gray-300 ml-5 mb-2' />
                     <SidebarItem title='Home' icon={<HouseSVG className={styles.sidebar_icon} />} href='main.home' />
                     <SidebarItem title='Activities' icon={<CarbonSVG className={styles.carbon_icon} />} href='main.activities' />
+                    <SidebarItem title='Regulations' icon={<LawSVG className={styles.law_icon} />} href='main.regulations' />
                 </div>
 
                 <div className='w-5/6 h-full p-4'>
