@@ -29,7 +29,7 @@ export default function DashboardMainHome({ setSelectedItem }: { setSelectedItem
                         classNames={{
                             value: 'text-[8px] font-medium'
                         }}
-                        color={(user?.carbonEmissions || 0) >= 2500 ? 'danger' : (user?.carbonEmissions || 0) >= 1000 ? 'warning' : 'success'}
+                        color={(user?.carbonEmissions || 0) >= 2500 ? 'danger' : (user?.carbonEmissions || 0) >= 1000 ? 'warning' : 'primary'}
                         maxValue={3500}
                         showValueLabel
                     />

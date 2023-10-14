@@ -48,7 +48,7 @@ export default function DashboardPage() {
                 </div>
 
                 <div className='w-5/6 h-full p-4'>
-                    <div className='w-full h-full rounded-xl flex flex-col bg-white border-2 border-gray-300 shadow-2xl'>
+                    <div className='w-full h-full rounded-xl flex flex-col bg-white border-2 border-gray-300 shadow-2xl overflow-y-scroll'>
                         {pageUi[selectedItem]}
                     </div>
                 </div>
