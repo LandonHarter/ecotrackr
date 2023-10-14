@@ -1,20 +1,28 @@
 'use client'
 
-import { Button, Input } from '@nextui-org/react';
+import { Button, Input, Modal, ModalContent, ModalHeader, useDisclosure } from '@nextui-org/react';
 import styles from '../../page.module.scss';
 import AddSVG from '@/svg/add';
 import SearchSVG from '@/svg/search';
 import { useAuthSession } from '@/context/UserContext';
-import { useEffect, useState } from 'react';
-import { CarbonActivity } from '@/types/emissions';
+import React, { useEffect, useState } from 'react';
+import { CarbonActivity, CarbonActivityType } from '@/types/emissions';
 import { carbonFromActivity } from '@/util/carbon';
 import Image from 'next/image';
 import { formatTimestamp } from '@/util/format';
+import { toast } from 'sonner';
+import LogCarRide from './(activities)/car';
 
 export default function DashboardMainActivities() {
     const { user } = useAuthSession();
     const [activities, setActivities] = useState<CarbonActivity[]>([]);
-    const [searchQuery, setSearchQuery] = useState('');
+
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [selectedActivity, setSelectedActivity] = useState<CarbonActivityType | null>(null);
+    const [logPage, setLogPage] = useState(0);
+    const pageUi: { [name: string]: React.ReactNode } = {
+        'car': <LogCarRide />
+    };
 
     function search(query: string) {
         if (query.length == 0) {
@@ -23,6 +31,23 @@ export default function DashboardMainActivities() {
         }
 
         setActivities(user?.carbonActivities.filter((activity) => activity.name.toLowerCase().includes(query.toLowerCase())) ?? []);
+    }
+
+    function CarbonActivity({ name }: { name: string }) {
+        return (
+            <label htmlFor={name} className={styles.radio_card}>
+                <input type="radio" id={name} onChange={() => {
+                    setSelectedActivity(name as CarbonActivityType);
+                }} />
+                <div className={styles.card_content_wrapper}>
+                    <span className={styles.check_icon}></span>
+                    <div className={styles.card_content}>
+                        <Image src={`/images/activity/${name.toLowerCase()}.png`} alt='car' width={70} height={70} />
+                        <h4>{name}</h4>
+                    </div>
+                </div>
+            </label>
+        );
     }
 
     useEffect(() => {
@@ -36,10 +61,9 @@ export default function DashboardMainActivities() {
                     inputWrapper: 'h-12',
                     input: 'h-full rounded-xl text-xl font-medium',
                 }} startContent={<SearchSVG className={styles.search_icon} />} onChange={(e) => {
-                    setSearchQuery(e.target.value);
                     search(e.target.value);
                 }} />
-                <Button color='primary' className='w-[200px] h-12 px-6 py-3 font-medium text-xl' startContent={<AddSVG className={styles.log_activity_icon} />}>Log Activity</Button>
+                <Button color='primary' className='w-[200px] h-12 px-6 py-3 font-medium text-xl' startContent={<AddSVG className={styles.log_activity_icon} />} onPress={onOpen}>Log Activity</Button>
             </div>
 
             <div className='flex flex-col w-full'>
@@ -62,6 +86,33 @@ export default function DashboardMainActivities() {
                     );
                 })}
             </div>
+
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='2xl'>
+                <ModalContent className='w-full flex flex-col items-center p-6'>
+                    <ModalHeader className='font-medium text-3xl mb-1'>Log Activity</ModalHeader>
+
+                    {logPage === 0 &&
+                        <>
+                            <div className='grid grid-cols-1 gap-8 mb-12'>
+                                <CarbonActivity name='Car' />
+                            </div>
+
+                            <Button color='primary' onPress={() => {
+                                if (selectedActivity === null) {
+                                    toast.error('Please select an activity to log.');
+                                    return;
+                                }
+
+                                setLogPage(1);
+                            }}>Continue</Button>
+                        </>
+
+                    }
+                    {logPage === 1 &&
+                        pageUi[selectedActivity ?? 'car']
+                    }
+                </ModalContent>
+            </Modal>
         </div>
     );
 }
