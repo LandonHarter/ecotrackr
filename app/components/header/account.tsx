@@ -1,6 +1,7 @@
 'use client'
 
 import { useAuthSession } from "@/context/UserContext";
+import { auth } from "@/firebase/init";
 import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Skeleton } from "@nextui-org/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -20,7 +21,7 @@ export default function HeaderAccount() {
         return (
             <>
                 <Link href='/signin'>
-                    <Button color="primary" className="font-medium text-md p-6">Get Started</Button>
+                    <Button color="primary" className="font-medium text-md p-[22px]">Sign In</Button>
                 </Link>
             </>
         );
@@ -34,7 +35,10 @@ export default function HeaderAccount() {
                         <Avatar name={user?.name || ''} src={user?.picture || ''} icon={null} showFallback className="cursor-pointer" />
                     </DropdownTrigger>
                     <DropdownMenu>
-                        <DropdownItem key='test'>Test</DropdownItem>
+                        <DropdownItem key='signout' color='danger' onPress={() => {
+                            setStatus('unauthenticated');
+                            auth.signOut();
+                        }}>Sign Out</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </>
