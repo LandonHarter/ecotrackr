@@ -77,7 +77,9 @@ async function createUserDocument(user: UserCredential, name?: string) {
         name: name ?? (user.user.displayName ?? ''),
         email: user.user.email ?? '',
         picture: user.user.photoURL ?? '',
-        createdAt: Timestamp.now()
+        createdAt: Timestamp.now(),
+        carbonEmissions: 0,
+        carbonActivities: []
     };
     await setDoc(userDoc, userObj);
 }
