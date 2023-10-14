@@ -59,10 +59,10 @@ export default function DashboardMainHome() {
                             </div>
                         );
                     })}
-                    {user?.carbonActivities.length === 0 &&
+                    {user?.carbonActivities.length === 0 ?
                         <div className='w-full h-full flex items-center justify-center'>
                             <h1 className='font-medium text-xl text-gray-400'>No activities yet</h1>
-                        </div>
+                        </div> : <div className='border-b-2' />
                     }
                 </div>
             </div>
