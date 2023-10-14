@@ -10,17 +10,27 @@ import { useAuthState } from "react-firebase-hooks/auth";
 type UserContextType = {
     user: User | null,
     loading: boolean,
-    error: Error | undefined
+    error: Error | undefined,
+    updateUser: () => Promise<void>
 };
 const UserContext = createContext<UserContextType>({
     user: null,
     loading: true,
-    error: undefined
+    error: undefined,
+    updateUser: async () => { }
 });
 
 function UserContextProvider({ children }: { children: React.ReactNode }) {
     const [user, loading, error] = useAuthState(auth);
     const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+    async function updateUser() {
+        if (user) {
+            setCurrentUser(await getUser(user.uid, true));
+        } else {
+            setCurrentUser(null);
+        }
+    }
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (u) => {
@@ -37,15 +47,15 @@ function UserContextProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     return (
-        <UserContext.Provider value={{ user: currentUser, loading: loading, error: error }}>
+        <UserContext.Provider value={{ user: currentUser, loading: loading, error: error, updateUser }}>
             {children}
         </UserContext.Provider>
     );
 }
 
 function useAuthSession() {
-    const { user, loading, error } = useContext(UserContext);
-    return { user, loading, error } as UserContextType;
+    const { user, loading, error, updateUser } = useContext(UserContext);
+    return { user, loading, error, updateUser } as UserContextType;
 }
 
 export { UserContext, UserContextProvider, useAuthSession };

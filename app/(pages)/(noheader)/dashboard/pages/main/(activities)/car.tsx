@@ -10,7 +10,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 export default function LogCarRide({ closeModal }: { closeModal: Function }) {
-    const { user } = useAuthSession();
+    const { user, updateUser } = useAuthSession();
     const [distance, setDistance] = useState<number>(0);
     const [mpg, setMpg] = useState<number>(0);
     const [fuelType, setFuelType] = useState<FuelType>('gasoline');
@@ -41,6 +41,7 @@ export default function LogCarRide({ closeModal }: { closeModal: Function }) {
             carbonActivities: arrayUnion(activityObject),
             carbonEmissions: user.carbonEmissions + carbonFromActivity(activityObject)
         });
+        await updateUser();
 
         setDistance(0);
         setMpg(0);
