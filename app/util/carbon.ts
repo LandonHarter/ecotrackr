@@ -25,7 +25,7 @@ function carbonFromCarRide(carRide: CarRide) {
     }
 
     const emissions = ((carRide.distance / carRide.fuelEfficiency) * carbonContentPerGallon).toFixed(1);
-    return emissions;
+    return parseFloat(emissions);
 }
 
 function carbonFromPlaneRide(planeRide: PlaneRide) {
@@ -40,7 +40,7 @@ function carbonFromPlaneRide(planeRide: PlaneRide) {
 
     const emissions = planeRide.distance * factor;
     const emissionsToKg = (emissions * 1000).toFixed(1);
-    return emissionsToKg;
+    return parseFloat(emissionsToKg);
 }
 
 function carbonFromStove(cooking: Stove) {
@@ -53,7 +53,7 @@ function carbonFromStove(cooking: Stove) {
     const gasUsedInMcf = (cooking.duration / 60) * gasConsumptionRate[cooking.level];
     const emissions = gasUsedInMcf * emissionFactor;
 
-    return emissions.toFixed(1);
+    return parseFloat(emissions.toFixed(1));
 }
 
 export { carbonFromActivity, carbonFromCarRide };
