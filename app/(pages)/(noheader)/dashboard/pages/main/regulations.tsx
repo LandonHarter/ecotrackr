@@ -62,7 +62,7 @@ export default function DashboardMainRegulations() {
       <h1 className='font-bold text-center text-[#353535] text-5xl mb-4 mt-8'>Environmental Regulations</h1>
       <p className='text-center text-gray-400 text-2xl mb-16'>What is being done to help?</p>
 
-      <div className='w-full flex flex-wrap'>
+      <div className='w-full flex flex-wrap justify-center'>
         {regulations.map((regulation) => (
           <>
             <RegulationCard title={regulation.attributes.title} date={new Date(regulation.attributes.postedDate)} link={`https://www.google.com/search?q=${regulation.attributes.title.split(' ').join('+')}`} />
