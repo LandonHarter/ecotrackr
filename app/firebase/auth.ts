@@ -29,7 +29,7 @@ export async function signInWithProvider(providerName: 'google' | 'microsoft'): 
     if (providerName === 'microsoft') {
         provider.setCustomParameters({
             prompt: 'consent',
-            tennant: 'f8cdef31-a31e-4b4a-93e4-5f571e91255a',
+            tenant: 'f8cdef31-a31e-4b4a-93e4-5f571e91255a',
         })
     }
 
