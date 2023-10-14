@@ -11,6 +11,7 @@ import { toast } from "sonner";
 
 export default function LogCarRide({ closeModal }: { closeModal: Function }) {
     const { user, updateUser } = useAuthSession();
+    const [name, setName] = useState<string>(`Car Ride ${user?.carbonActivities.length ?? 0}`);
     const [distance, setDistance] = useState<number>(0);
     const [mpg, setMpg] = useState<number>(0);
     const [fuelType, setFuelType] = useState<FuelType>('gasoline');
@@ -33,7 +34,7 @@ export default function LogCarRide({ closeModal }: { closeModal: Function }) {
             distance,
             fuelEfficiency: mpg,
             fuelType,
-            name: 'Car Ride',
+            name,
             time: Timestamp.now(),
             type: 'car'
         };
@@ -53,6 +54,10 @@ export default function LogCarRide({ closeModal }: { closeModal: Function }) {
     return (
         <div className='flex flex-col items-center mt-4'>
             <div className='flex flex-col items-center mb-8'>
+                <Input placeholder='Car Ride' className='w-full text-xl mb-4' onChange={(e) => {
+                    setName(e.target.value);
+                }} />
+
                 <div className='flex items-center mb-4'>
                     <Input type='number' placeholder='10' endContent='miles' className='w-32 mr-2' onChange={(e) => {
                         setDistance(parseInt(e.target.value));
