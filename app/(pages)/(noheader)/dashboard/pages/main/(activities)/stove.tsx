@@ -2,19 +2,18 @@
 
 import { useAuthSession } from "@/context/UserContext";
 import { db } from "@/firebase/init";
-import { CarRide, FuelType } from "@/types/emissions";
+import { CarRide, FuelType, Stove, StoveLevel } from "@/types/emissions";
 import { carbonFromActivity } from "@/util/carbon";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { Timestamp, arrayUnion, collection, doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function LogCarRide({ closeModal }: { closeModal: Function }) {
+export default function LogStoveTop({ closeModal }: { closeModal: Function }) {
     const { user, updateUser } = useAuthSession();
     const [name, setName] = useState<string>(`Car Ride ${user?.carbonActivities.length ?? 0}`);
-    const [distance, setDistance] = useState<number>(0);
-    const [mpg, setMpg] = useState<number>(0);
-    const [fuelType, setFuelType] = useState<FuelType>('gasoline');
+    const [duration, setDuration] = useState<number>(0);
+    const [stoveLevel, setStoveLevel] = useState<StoveLevel>('medium');
     const [loading, setLoading] = useState<boolean>(false);
 
     async function logRide() {
@@ -23,20 +22,19 @@ export default function LogCarRide({ closeModal }: { closeModal: Function }) {
             return;
         }
 
-        if (distance == 0 || mpg == 0 || name == '') {
+        if (duration === 0 || name === '') {
             toast.error('Please fill out all fields.');
             return;
         }
 
         setLoading(true);
         const userDoc = doc(collection(db, 'users'), user.id);
-        const activityObject: CarRide = {
-            distance,
-            fuelEfficiency: mpg,
-            fuelType,
+        const activityObject: Stove = {
+            level: stoveLevel,
+            duration,
             name,
             time: Timestamp.now(),
-            type: 'car'
+            type: 'stove'
         };
         await updateDoc(userDoc, {
             carbonActivities: arrayUnion(activityObject),
@@ -44,9 +42,8 @@ export default function LogCarRide({ closeModal }: { closeModal: Function }) {
         });
         await updateUser();
 
-        setDistance(0);
-        setMpg(0);
-        setFuelType('gasoline');
+        setDuration(0);
+        setStoveLevel('medium');
         setLoading(false);
         closeModal();
     }
@@ -54,25 +51,20 @@ export default function LogCarRide({ closeModal }: { closeModal: Function }) {
     return (
         <div className='flex flex-col items-center mt-4'>
             <div className='flex flex-col items-center mb-8'>
-                <Input placeholder='Name your trip' className='w-full text-xl mb-4' onChange={(e) => {
+                <Input placeholder='Name your stovetop session' className='w-full text-xl mb-4' onChange={(e) => {
                     setName(e.target.value);
                 }} />
 
-                <div className='flex items-center mb-4'>
-                    <Input type='number' placeholder='10' endContent='miles' className='w-32 mr-2' onChange={(e) => {
-                        setDistance(parseInt(e.target.value));
-                    }} />
-                    <Input type='number' placeholder='20' endContent='mpg' className='w-32 ml-2' onChange={(e) => {
-                        setMpg(parseInt(e.target.value));
-                    }} />
-                </div>
+                <Input type='number' placeholder='10' endContent='minutes' className='w-full mb-4' onChange={(e) => {
+                    setDuration(parseInt(e.target.value));
+                }} />
 
-                <Select label='Fuel Type' defaultSelectedKeys={['gasoline']} onChange={(e) => {
-                    setFuelType(e.target.value as FuelType);
+                <Select label='Stove Level' defaultSelectedKeys={['medium']} onChange={(e) => {
+                    setStoveLevel(e.target.value as StoveLevel);
                 }}>
-                    <SelectItem key='gasoline' value='gasoline'>Petrol</SelectItem>
-                    <SelectItem key='diesel' value='diesel'>Diesel</SelectItem>
-                    <SelectItem key='electric' value='electric'>Electric</SelectItem>
+                    <SelectItem key='low' value='low'>Low</SelectItem>
+                    <SelectItem key='medium' value='medium'>Medium</SelectItem>
+                    <SelectItem key='high' value='high'>High</SelectItem>
                 </Select>
             </div>
 

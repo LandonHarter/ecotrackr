@@ -14,6 +14,8 @@ import { toast } from 'sonner';
 import LogCarRide from './(activities)/car';
 import { SortBy } from '@/types/sort';
 import sortActivities from '@/util/sort';
+import LogPlaneRide from './(activities)/plane';
+import LogStoveTop from './(activities)/stove';
 
 export default function DashboardMainActivities() {
     const { user } = useAuthSession();
@@ -43,6 +45,8 @@ export default function DashboardMainActivities() {
     function getPageUi(onClose: Function) {
         switch (selectedActivity) {
             case 'car': return <LogCarRide closeModal={onClose} />;
+            case 'plane': return <LogPlaneRide closeModal={onClose} />;
+            case 'stove': return <LogStoveTop closeModal={onClose} />;
             default: return <></>;
         }
     }
@@ -52,11 +56,11 @@ export default function DashboardMainActivities() {
             <label htmlFor={name} className={styles.radio_card}>
                 <input type="radio" id={name} onChange={() => {
                     setSelectedActivity(name.toLowerCase() as CarbonActivityType);
-                }} />
+                }} checked={name.toLowerCase() == selectedActivity} />
                 <div className={styles.card_content_wrapper}>
                     <span className={styles.check_icon}></span>
                     <div className={styles.card_content}>
-                        <Image src={`/images/activity/${name.toLowerCase()}.png`} alt='car' width={70} height={70} />
+                        <Image src={`/images/activity/${name.toLowerCase()}.png`} alt={name} width={70} height={70} />
                         <h4>{name}</h4>
                     </div>
                 </div>
@@ -127,15 +131,17 @@ export default function DashboardMainActivities() {
                 }
             </div>
 
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='2xl'>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='2xl' hideCloseButton>
                 <ModalContent className='w-full flex flex-col items-center p-6'>
                     {(onClose: Function) => (
                         <>
                             <ModalHeader className='font-medium text-3xl mb-1'>Log Activity</ModalHeader>
                             {logPage === 0 &&
                                 <>
-                                    <div className='grid grid-cols-1 gap-8 mb-12'>
+                                    <div className='grid grid-cols-3 gap-8 mb-12'>
                                         <CarbonActivity name='Car' />
+                                        <CarbonActivity name='Plane' />
+                                        <CarbonActivity name='Stove' />
                                     </div>
 
                                     <Button color='primary' onPress={() => {

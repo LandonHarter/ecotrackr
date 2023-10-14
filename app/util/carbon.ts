@@ -1,8 +1,10 @@
-import { CarRide, CarbonActivity } from "@/types/emissions";
+import { CarRide, CarbonActivity, PlaneRide, Stove, StoveLevel } from "@/types/emissions";
 
 function carbonFromActivity(activity: CarbonActivity) {
     switch (activity.type) {
         case 'car': return carbonFromCarRide(activity as CarRide);
+        case 'plane': return carbonFromPlaneRide(activity as PlaneRide);
+        case 'stove': return carbonFromStove(activity as Stove);
         default: return 0;
     }
 }
@@ -24,6 +26,34 @@ function carbonFromCarRide(carRide: CarRide) {
 
     const emissions = Math.round((carRide.distance / carRide.fuelEfficiency) * carbonContentPerGallon);
     return emissions;
+}
+
+function carbonFromPlaneRide(planeRide: PlaneRide) {
+    let factor = 0;
+    if (planeRide.distance < 300) {
+        factor = 0.00025;
+    } else if (planeRide.distance >= 300 && planeRide.distance <= 2299) {
+        factor = 0.00014;
+    } else {
+        factor = 0.00017;
+    }
+
+    const emissions = planeRide.distance * factor;
+    const emissionsToKg = Math.round(emissions * 1000);
+    return emissionsToKg;
+}
+
+function carbonFromStove(cooking: Stove) {
+    const gasConsumptionRate: Record<StoveLevel, number> = {
+        low: 0.005,
+        medium: 0.01,
+        high: 0.02
+    };
+    const emissionFactor = 53.12;
+    const gasUsedInMcf = (cooking.duration / 60) * gasConsumptionRate[cooking.level];
+    const emissions = gasUsedInMcf * emissionFactor;
+
+    return Math.round(emissions);
 }
 
 export { carbonFromActivity, carbonFromCarRide };
