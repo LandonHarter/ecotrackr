@@ -1,13 +1,12 @@
 'use client'
 
-import { auth } from "@/firebase/init";
-import { Avatar, Button, Skeleton } from "@nextui-org/react";
+import { useAuthSession } from "@/context/UserContext";
+import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Skeleton } from "@nextui-org/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function HeaderAccount() {
-    const [user, loading, error] = useAuthState(auth);
+    const { user, loading, error } = useAuthSession();
     const [status, setStatus] = useState<'authenticated' | 'unauthenticated' | 'loading'>('loading');
 
     useEffect(() => {
@@ -30,7 +29,14 @@ export default function HeaderAccount() {
     function avatar() {
         return (
             <>
-                <Avatar name={user?.displayName || ''} src={user?.photoURL || ''} icon={null} showFallback className="cursor-pointer" />
+                <Dropdown placement='bottom-end'>
+                    <DropdownTrigger>
+                        <Avatar name={user?.name || ''} src={user?.picture || ''} icon={null} showFallback className="cursor-pointer" />
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                        <DropdownItem key='test'>Test</DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
             </>
         );
     }
