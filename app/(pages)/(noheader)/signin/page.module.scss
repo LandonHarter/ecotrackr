@@ -1,0 +1,31 @@
+.form_container {
+    width: 50%;
+    min-width: 800px;
+}
+
+.right {
+    width: 50%;
+
+    background-image: url('https://images.alphacoders.com/700/700817.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.form_item {
+    width: 50%;
+}
+
+@media screen and (max-width: 800px) {
+    .form_container {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .form_item {
+        width: 90%;
+    }
+
+    .right {
+        width: 0;
+    }
+}

@@ -1,6 +1,7 @@
 import './globals.css';
 import basicMetadata from '@/util/metadata';
 import UIProvider from './providers/next-ui';
+import { Toaster } from 'sonner';
 
 export const metadata = basicMetadata();
 export default function RootLayout({
@@ -11,6 +12,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Toaster richColors />
         <UIProvider>
           {children}
         </UIProvider>
