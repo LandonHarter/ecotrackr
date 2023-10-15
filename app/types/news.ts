@@ -1,21 +1,27 @@
-export type ArticleSource = {
-    id: any;
-    name: string;
-};
-
 export type Article = {
-    source: ArticleSource;
-    author: string | null;
+    uuid: string;
     title: string;
     description: string;
+    keywords: string;
+    snippet: string;
     url: string;
-    urlToImage: string;
-    publishedAt: string;
-    content: string;
+    image_url: string;
+    language: string;
+    published_at: string;
+    source: string;
+    categories: string[];
+    relevance_score: any;
+    locale: string;
+};
+
+export type NewsResponseMeta = {
+    found: number;
+    returned: number;
+    limit: number;
+    page: number;
 };
 
 export type NewsResponse = {
-    status: 'ok' | 'error';
-    totalResults: number;
-    articles: Article[];
+    meta: NewsResponseMeta;
+    data: Article[];
 }

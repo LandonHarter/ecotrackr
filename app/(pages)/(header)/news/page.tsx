@@ -13,17 +13,15 @@ export default function NewsPage() {
         (async () => {
             if (articles.length > 0) return;
             const res = await getNewsArticles();
-            console.log(res);
-            return;
-            setArticles(res.articles);
+            setArticles(res.data);
         })();
     }, []);
 
     function Story({ article }: { article: Article }) {
-        if (!article.urlToImage) return <></>;
+        if (!article.image_url) return <></>;
         return (
             <Link href={article.url} target='_blank' className='max-w-[450px] flex flex-col m-8'>
-                <Image src={article.urlToImage} width={400} height={300} alt={article.title} className='rounded-xl mb-6 w-[400px] h-[250px]' />
+                <Image src={article.image_url} width={400} height={300} alt={article.title} className='rounded-xl mb-6 w-[400px] h-[250px]' />
                 <h1 className='text-lg text-[hsl(var(--nextui-primary-500))] font-semibold mb-px'>NEWS STORY</h1>
                 <h1 className='text-2xl font-bold mb-2 overflow-hidden whitespace-nowrap text-ellipsis'>{article.title}</h1>
                 <p className='text-semibold text-gray-500  mb-4'>{article.description}</p>
@@ -47,8 +45,7 @@ export default function NewsPage() {
 
 async function getNewsArticles() {
     const search = 'pollution|climate%20change|global%20warming';
-    const url = `https://newsapi.org/v2/everything?q=${search}&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`;
-    console.log(process.env.NEXT_PUBLIC_NEWS_API_KEY);
+    const url = `https://api.thenewsapi.com/v1/news/top?api_token=${process.env.NEXT_PUBLIC_NEWS_API_KEY}&locale=us&search=${search}`;
     const req = await fetch(url);
     const res = await req.json();
     return res as NewsResponse;
