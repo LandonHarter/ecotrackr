@@ -13,7 +13,7 @@ export default function NewsPage() {
         (async () => {
             if (articles.length > 0) return;
             const res = await getNewsArticles();
-            console.log(res.articles);
+            console.log(res);
             return;
             setArticles(res.articles);
         })();
@@ -48,6 +48,7 @@ export default function NewsPage() {
 async function getNewsArticles() {
     const search = 'pollution|climate%20change|global%20warming';
     const url = `https://newsapi.org/v2/everything?q=${search}&apiKey=${process.env.NEXT_PUBLIC_NEWS_API_KEY}`;
+    console.log(process.env.NEXT_PUBLIC_NEWS_API_KEY);
     const req = await fetch(url);
     const res = await req.json();
     return res as NewsResponse;
