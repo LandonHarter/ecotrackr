@@ -7,18 +7,19 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 
 export default function NewsPage() {
-    const [articles, setArticles] = useState<any[]>([]);
+    const [articles, setArticles] = useState<Article[]>([]);
 
     useEffect(() => {
         (async () => {
             if (articles.length > 0) return;
             const res = await getNewsArticles();
+            console.log(res.articles);
+            return;
             setArticles(res.articles);
         })();
     }, []);
 
     function Story({ article }: { article: Article }) {
-        const date = new Date(article.publishedAt);
         if (!article.urlToImage) return <></>;
         return (
             <Link href={article.url} target='_blank' className='max-w-[450px] flex flex-col m-8'>
@@ -30,7 +31,6 @@ export default function NewsPage() {
         );
     }
 
-    // 
     return (
         <div>
             <div className='w-full h-[60vh] flex flex-col items-center justify-center'>
